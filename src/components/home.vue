@@ -401,7 +401,6 @@ methods: {
     background-color: #f0f0f0;
 }
 .img{
-    margin-top: 40px;
     width: 25%;
     height: 90px;
     background-image: url("logo.png");
@@ -446,5 +445,10 @@ methods: {
     background-color:#f0f0f0 ;
     border-color: #f0f0f0;
 }
+.bg{
+    background-color: #e1f2fb;
+    min-height: 100vh;
+}
+
 }
 </style>
