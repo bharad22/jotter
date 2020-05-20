@@ -109,7 +109,7 @@ methods: {
 
     },
     url(){
-         this.id=username.random();
+        this.id=username.random();
         this.id= this.id.replace(' ','-')
         db.collection('users').doc(this.id).get().then(doc=>{
         if(!doc.exists){
@@ -144,11 +144,13 @@ methods: {
         });
     }
 },
-    mounted(){
-            db.collection("users").doc(this.id).get().then(doc=>{
-            this.content=doc.data().content
-        })
-    }
+mounted(){
+    db.collection("users").doc(this.id)
+    .onSnapshot((doc)=> {
+    this.content=doc.data().content
+    console.log(this.content)
+    });
+}
 }
 </script>
 
@@ -410,19 +412,19 @@ methods: {
 }
 .ic2{
     font-size: 20px;
-    margin-left: 310px;
+    margin-left: 330px;
     cursor: pointer;
     opacity: 0.7; 
-    position:fixed;
+    position: absolute;
     display: flex;
     padding-top: 5px!important;  
 }
 .ic3{
     font-size: 20px;
-    margin-left: 260px;
+    margin-left: 280px;
     cursor: pointer;
     opacity: 0.7; 
-    position:fixed;
+    position: absolute;
     display: flex;
     padding-top: 5px!important;  
 }
@@ -431,7 +433,7 @@ methods: {
     border-style: groove;
     width: 80px;
     cursor: pointer;
-    margin-left: 110px;
+    margin-left: 130px;
     background-color:#f0f0f0 ;
     border-color: #f0f0f0;
 }
