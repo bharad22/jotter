@@ -134,11 +134,13 @@ methods: {
         }
     },
     del(){
-        alert("This will erase the entire Text")
-        this.content=""
-        db.collection("users").doc(this.id).set({
-        content: this.content
-        })
+        if(confirm("This will erase the entire text"))
+        {
+            this.content=""
+            db.collection("users").doc(this.id).set({
+            content: this.content
+            })
+        }
 
     }
 },
