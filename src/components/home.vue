@@ -135,13 +135,11 @@ methods: {
     },
     del(){
         alert("This will erase the entire Text")
-        this.content=null
-        db.collection("users").doc(this.id).delete().then(function() {
-            console.log("Document successfully deleted!");
-            this.content=null
-        }).catch(function(error) {
-        console.error("Error removing document: ", error);
-        });
+        this.content=""
+        db.collection("users").doc(this.id).set({
+        content: this.content
+        })
+
     }
 },
 mounted(){
