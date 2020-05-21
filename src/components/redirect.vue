@@ -1,6 +1,6 @@
 <template>
   <div class="redirect">
-    <bar-loader class="custom-class" color="#bada55" :loading="loading" :size="150" :sizeUnit="px"></bar-loader>
+   <bar-loader class="custom-class" color="#c70039" :loading="loading" :size="150" :sizeUnit="px"></bar-loader>
   </div>
    
 </template>
@@ -21,12 +21,12 @@ export default {
     }
   },
   created(){
-    new Vue({ el: '#app', data: { loading: true } })
+    new Vue({ el: '#app', data: { loading: false } })
     this.id=username.random();
-    this.id= this.id.replace(' ','-')
+    this.id= this.id.replace(/[^A-Z0-9]/ig, "-")
     db.collection('users').doc(this.id).get().then(doc=>{
       if(!doc.exists){
-        this.$router.push({name:'home',params:{id:this.id}})
+        this.$router.push({name:'home',params:{id: this.id}})
       }else{
         this.$router.push({name:'redirect'}).catch(err=>{})
       }
@@ -37,5 +37,10 @@ export default {
 </script>
 
 <style scoped>
+.custom-class{
+  margin:auto;
+  margin-top: 25%;
+  width: 200px;
 
+}
 </style>

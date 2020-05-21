@@ -1,7 +1,17 @@
 <template>
     <div class="fluid-container bg" id="bg">
+        <div class="lock" id="lock">
+            <i class="fas fa-user-lock ic6" id="ic6" @click.prevent="lock()"></i>
+        </div>
+        <div class="center hideform" id="hf">
+            <button id="close" style="float: right;" @click.prevent="close()">X</button>
+            <form>
+                <input type="password" name="password" placeholder="Enter Password to set just enter remove to remove" required="required" v-model="password">
+                <center><button @click.prevent="set()">Set</button><button @click.prevent="remv()">Remove</button></center>
+            </form>
+        </div>
        <center> 
-           <div class="img"></div>
+           <div class="img" id="img"></div>
        </center>
         
         <form >
@@ -42,7 +52,9 @@ data(){
     return{
         x:1,
         content: null,
-        notes: null
+        notes: "",
+        password: "",
+        passwd:""
     }
 },
 methods: {
@@ -82,6 +94,7 @@ methods: {
            document.getElementById("ic4").style.color="white"
            document.getElementById("btn5").style.backgroundColor="#323232"
            document.getElementById("ic5").style.color="white"
+           document.getElementById("ic6").style.color="white"
            document.getElementById("btn5").style.borderColor="#323232"
            document.getElementById("bg").style.backgroundColor="#222831"
            }
@@ -105,7 +118,9 @@ methods: {
            document.getElementById("ic5").style.color="#c70039" 
            document.getElementById("btn5").style.borderColor="#f0f0f0"
            document.getElementById("bg").style.backgroundColor="#e1f2fb"
+           document.getElementById("ic6").style.color="black"
            }
+
 
     },
     url(){
@@ -128,7 +143,8 @@ methods: {
             this.notes=this.content
             console.log(this.notes)
             db.collection("users").doc(this.id).set({
-                content: this.notes
+                content: this.content,
+                password:this.passwd
             })
             alert("Data Added Successfully")
         }
@@ -136,18 +152,65 @@ methods: {
     del(){
         if(confirm("This will erase the entire text"))
         {
+            this.notes=""
             this.content=""
             db.collection("users").doc(this.id).set({
-            content: this.content
+            content: this.content,
+            password:this.passwd
             })
         }
 
+    },
+    lock(){
+        document.getElementById("hf").className="center"
+        document.getElementById("cont").style.display="none"
+        document.getElementById("content").style.display="none"
+        document.getElementById("bot").style.display="none"
+        document.getElementById("img").style.display="none"
+    },
+    close(){
+        document.getElementById("hf").className="hideform"
+        document.getElementById("cont").style.display="flex"
+        document.getElementById("content").style.display="flex"
+        document.getElementById("bot").style.display="flex"
+        document.getElementById("img").style.display="block"
+    },
+    set(){
+        if(this.password){
+            db.collection("users").doc(this.id).set({
+                content:this.notes,
+                password:this.password
+            })
+            alert("Password set to this link")
+        }
+        document.getElementById("hf").className="hideform"
+        document.getElementById("cont").style.display="flex"
+        document.getElementById("content").style.display="flex"
+        document.getElementById("bot").style.display="flex"
+        document.getElementById("img").style.display="block"
+
+
+    },
+    remv(){
+            this.password=""
+            db.collection("users").doc(this.id).set({
+            content:this.notes,
+            password:this.password
+            })
+            alert("Password removed successfully")
+        document.getElementById("hf").className="hideform"
+        document.getElementById("cont").style.display="flex"
+        document.getElementById("content").style.display="flex"
+        document.getElementById("bot").style.display="flex"
+        document.getElementById("img").style.display="block"
     }
 },
 mounted(){
     db.collection("users").doc(this.id)
     .onSnapshot((doc)=> {
+        //console.log(doc.data().password)
     this.content=doc.data().content
+    this.passwd=doc.data().password
     console.log(this.content)
     });
 }
@@ -304,6 +367,13 @@ mounted(){
     margin-bottom: 2px!important;
     padding-bottom: 3px!important;
 }
+.ic6{
+    font-size: 30px;
+    margin-left: 20px;
+    margin-top: 20px;
+    cursor: pointer;
+
+}
 .cont{
     width: 60%;
     height: 40px;
@@ -325,6 +395,7 @@ mounted(){
     background-image: url("logo.png");
     position: relative;
     background-size: cover;
+    display: block;
 
 }
 .btn4{
@@ -350,13 +421,26 @@ mounted(){
     background-color: #e1f2fb;
     min-height: 100vh;
 }
+.center{
+    background-color: white;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 16%;
+    width: 40%;
+    padding: 20px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
 
-@media only screen and (max-width: 600px){
+.hideform {
+    display: none;
+}
+
+@media only screen and (max-width: 650px){
     .content{
     position: relative;
     display: flex;
     width: 97%;
-    height: 300px;
+    height: 400px;
     border-style: groove;
     opacity: 10;
     margin-left: auto;
@@ -408,6 +492,7 @@ mounted(){
     background-image: url("logo.png");
     position: relative;
     background-size: cover;
+    display: block;
 
 }
 .ic2{
@@ -433,7 +518,7 @@ mounted(){
     border-style: groove;
     width: 80px;
     cursor: pointer;
-    margin-left: 130px;
+    margin-left: 120px;
     background-color:#f0f0f0 ;
     border-color: #f0f0f0;
 }
@@ -450,6 +535,25 @@ mounted(){
 .bg{
     background-color: #e1f2fb;
     min-height: 100vh;
+}
+.center{
+    background-color: white;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 50%;
+    width: 80%;
+    padding: 20px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.hideform {
+    display: none;
+}
+.ic6{
+    font-size: 30px;
+    margin-left: 20px;
+    margin-top: 20px;
+    cursor: pointer;
 }
 
 }
